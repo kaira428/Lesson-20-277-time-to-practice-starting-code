@@ -1,4 +1,4 @@
-import { Route, useParams, useHistory } from "react-router-dom";
+import { Route, useParams, useHistory, useRouteMatch } from "react-router-dom";
 import Comments from "../components/comments/Comments";
 import HighlightedQuote from "../components/quotes/HighlightedQuote";
 
@@ -10,24 +10,27 @@ const DUMMY_QUOTES = [
 const QuoteDetail = () => {
   const param = useParams();
   const history = useHistory();
+  const match = useRouteMatch();
+
+  console.log(match);
 
   const quote = DUMMY_QUOTES.find((quote) => quote.id === param.quoteId);
 
   const addCommentHandler = () => {
-    history.push(`/quotes/${quote.id}/comments`);
+    history.push(`${match.url}/comments`);
   };
 
   return (
     <section>
       <HighlightedQuote text={quote.text} author={quote.author} />
-      <Route path={`/quotes/${quote.id}`} exact>
+      <Route path={match.path} exact>
         <div>
           <button className="centered btn" onClick={addCommentHandler}>
             Load Comments
           </button>
         </div>
       </Route>
-      <Route path={`/quotes/${quote.id}/comments`}>
+      <Route path={`${match.path}/comments`}>
         <Comments />
       </Route>
     </section>

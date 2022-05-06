@@ -7,7 +7,7 @@ import classes from "./QuoteList.module.css";
 const sortQuotes = (quotes, ascending) => {
   return quotes.sort((quoteA, quoteB) => {
     if (ascending) {
-      console.log(`QuoteA: ${quoteA.id}, QuoteB:  ${quoteB.id}`)
+      console.log(`QuoteA: ${quoteA.id}, QuoteB:  ${quoteB.id}`);
       return quoteA.id > quoteB.id ? 1 : -1;
     } else {
       return quoteA.id < quoteB.id ? 1 : -1;
@@ -21,18 +21,26 @@ const QuoteList = (props) => {
 
   const queryParams = new URLSearchParams(location.search);
 
-  const isSortingAscending = queryParams.get('sort') === 'asc';
+  const isSortingAscending = queryParams.get("sort") === "asc";
 
   const sortedQuotes = sortQuotes(props.quotes, isSortingAscending);
 
   const sortHandler = () => {
-    history.push(`/quotes?sort=${isSortingAscending ? 'desc' : 'asc'}`);
+    /*  history.push(`${location.pathname}?sort=${isSortingAscending ? 'desc' : 'asc'}`);
+     */
+
+    history.push({
+      pathname: location.pathname,
+      search: `?sort=${isSortingAscending ? "desc" : "asc"}`,
+    });
   };
 
   return (
     <Fragment>
       <div className={classes.sorting}>
-        <button onClick={sortHandler}>Sort {isSortingAscending ? 'Descending' : 'Ascending'}</button>
+        <button onClick={sortHandler}>
+          Sort {isSortingAscending ? "Descending" : "Ascending"}
+        </button>
       </div>
       <ul className={classes.list}>
         {sortedQuotes.map((quote) => (
